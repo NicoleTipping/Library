@@ -1,4 +1,7 @@
 let libraryConatiner = document.querySelector('.library-container');
+let newBookButton = document.querySelector('.newBookButton');
+let newBookForm = document.querySelector('.newBookForm');
+
 
 const myLibrary = [
     {
@@ -17,38 +20,12 @@ const myLibrary = [
     },
     {
         "id": crypto.randomUUID(),
-        "name": "Fouth Wing",
+        "name": "Fourth Wing",
         "author": "Rebecca Yarros",
         "pages": 465,
         "read": true,
     },
 ];
-
-function Book(name, author, pages, read) {
-    if (!new.target) {
-        throw Error("You must use 'new' operator to call constructor")
-    }
-    this.name = name;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.info = function () {
-        if (read) {
-            return `${name} by ${author}, ${pages} pages, read`
-        } else {
-            return `${name} by ${author}, ${pages} pages, not read yet`
-        }
-    }
-}
-
-const hobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, true);
-
-console.log(hobbit.info());
-
-function addBookToLibrary(name, author, pages, read) {
-    // take params, create a book then store it in the array
-    
-}
 
 myLibrary.forEach(book => {
     const bookCard = document.createElement('div');
@@ -64,4 +41,25 @@ myLibrary.forEach(book => {
         </div>
     `;
     libraryConatiner.appendChild(bookCard);
+});
+
+function Book(name, author, pages, read) {
+    this.name = name;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+};
+
+newBookButton.addEventListener("click", () => {
+    document.querySelector('.form-container').style.display = "block";
+    document.querySelector('.newBookButton').style.display = "none";
+});
+
+newBookForm.addEventListener("submit", () => {
+    document.querySelector('.newBookButton').style.display = "block";
 })
+
+function addBookToLibrary(name, author, pages, read) {
+    // take params, create a book then store it in the array
+    
+};
