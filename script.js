@@ -2,25 +2,29 @@ let libraryConatiner = document.querySelector('.library-container');
 let newBookButton = document.querySelector('.newBookButton');
 let newBookForm = document.querySelector('.newBookForm');
 
+let title = '';
+let author = '';
+let pages = 0;
+let read = false;
 
 const myLibrary = [
     {
         "id": crypto.randomUUID(),
-        "name": "Throne of Glass",
+        "title": "Throne of Glass",
         "author": "Sarah J. Maas",
         "pages": 295,
         "read": true,
     },
     {
         "id": crypto.randomUUID(),
-        "name": "Shadow of the Gods",
+        "title": "Shadow of the Gods",
         "author": "John Gwynne",
         "pages": 508,
         "read": false,
     },
     {
         "id": crypto.randomUUID(),
-        "name": "Fourth Wing",
+        "title": "Fourth Wing",
         "author": "Rebecca Yarros",
         "pages": 465,
         "read": true,
@@ -31,7 +35,7 @@ myLibrary.forEach(book => {
     const bookCard = document.createElement('div');
     bookCard.classList.add('book-card')
     bookCard.innerHTML = `
-        <div class="title">${book.name}</div>
+        <div class="title">${book.title}</div>
         <div>By</div>
         <div class="author">${book.author}</div>
         <div class="pages">${book.pages} pages</div>
@@ -43,8 +47,8 @@ myLibrary.forEach(book => {
     libraryConatiner.appendChild(bookCard);
 });
 
-function Book(name, author, pages, read) {
-    this.name = name;
+function Book(title, author, pages, read) {
+    this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
@@ -55,11 +59,24 @@ newBookButton.addEventListener("click", () => {
     document.querySelector('.newBookButton').style.display = "none";
 });
 
-newBookForm.addEventListener("submit", () => {
-    document.querySelector('.newBookButton').style.display = "block";
-})
+newBookForm.addEventListener("submit", (e) => {
+    document.querySelector('.newBookButton').style.display = "block"
 
-function addBookToLibrary(name, author, pages, read) {
-    // take params, create a book then store it in the array
+    title = e.target.elements[0].value
+    author = e.target.elements[1].value
+    pages = Number(e.target.elements[2].value)
+    if(document.querySelector('input[type="radio"]:checked')){
+        read = true
+    } else {
+        read = false
+    }
     
+    addBookToLibrary(title, author, pages, read)
+});
+
+function addBookToLibrary(title, author, pages, read) {
+    let newBook = new Book(title, author, pages, read);
+    console.log(newBook);
+    
+    return myLibrary.push(newBook)
 };
