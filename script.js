@@ -3,33 +3,10 @@ let newBookButton = document.querySelector('.newBookButton');
 let newBookForm = document.querySelector('.newBookForm');
 let deleteButton = document.querySelector('.deleteButton')
 
-let title = ''
-let author = ''
-let pages = 0
-let read = false
-
 const myLibrary = [
-    {
-        "id": crypto.randomUUID(),
-        "title": "Throne of Glass",
-        "author": "Sarah J. Maas",
-        "pages": 295,
-        "read": true,
-    },
-    {
-        "id": crypto.randomUUID(),
-        "title": "Shadow of the Gods",
-        "author": "John Gwynne",
-        "pages": 508,
-        "read": false,
-    },
-    {
-        "id": crypto.randomUUID(),
-        "title": "Fourth Wing",
-        "author": "Rebecca Yarros",
-        "pages": 465,
-        "read": true,
-    },
+    new Book ("Throne of Glass", "Sarah J. Maas", 295, true),
+    new Book ("Shadow of the Gods", "John Gwynne", 508, false),
+    new Book ("Fourth Wing", "Rebecca Yarros", 465, true),
 ];
 
 function displayArray() {
@@ -43,7 +20,7 @@ function displayArray() {
         <div class="author">${book.author}</div>
         <div class="pages">${book.pages} pages</div>
         <div class="buttons">
-            <button type="button" class="readButton">Read</button>
+            <button type="button" class="readButton" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
             <button type="button" class="deleteButton" data-id="${book.id}" >Delete</button>
         </div>
     `;
@@ -69,6 +46,9 @@ newBookForm.addEventListener("submit", (e) => {
     }
 
     addBookToLibrary(title, author, pages, read);
+
+    newBookForm.reset()
+
 });
 
 function addBookToLibrary(title, author, pages, read) {
@@ -105,4 +85,18 @@ libraryConatiner.addEventListener('click', (e) => {
             e.target.closest('.book-card').remove()
         }
     }
+
+    if (e.target.classList.contains('readButton')) {
+        let id = e.target.dataset.id;
+        let book = myLibrary.find(book => book.id == id);
+
+        if (book) {
+            book.toggleStatus();
+            e.target.textContent = book.read ? "Read" : "Not Read";
+        }
+    }
 });
+
+Book.prototype.toggleStatus = function () {
+    this.read = !this.read
+}
